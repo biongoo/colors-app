@@ -1,3 +1,5 @@
+@import './variables.scss';
+
 * {
   box-sizing: border-box;
 }
@@ -7,6 +9,6 @@ body {
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   margin: 0;
-  color: white;
-  background-color: #161c24;
+  color: $primary-color;
+  background-color: $secondary-bg-color;
 }
