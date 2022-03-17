@@ -1,0 +1,23 @@
+@import '../../variables.scss';
+
+.button {
+  align-self: flex-start;
+  padding: 0.6rem 0.8rem;
+  background-color: $success-color;
+  border: none;
+  color: $primary-color;
+  text-transform: uppercase;
+  font-weight: bold;
+  border-radius: 4px;
+  transition: transform 2s;
+
+  &:hover {
+    background-color: $success-hover-color;
+    box-shadow: $box-shadow;
+  }
+
+  &:active {
+    background-color: $success-active-color;
+    box-shadow: $box-shadow;
+  }
+}

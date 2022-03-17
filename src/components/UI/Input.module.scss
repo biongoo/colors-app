@@ -1,10 +1,13 @@
 @import '../../variables.scss';
 
 .inputBox {
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.6 * $row-gap;
+
   & > label {
     display: block;
     font-size: 1.1rem;
-    margin-bottom: 0.6rem;
   }
 
   & > input {
@@ -13,8 +16,9 @@
     background-color: $primary-bg-color;
     border: 1px solid $border-color;
     border-radius: 4px;
-    padding: 0.8em 0.4rem;
+    padding: 1em 0.6rem;
     width: 100%;
+    letter-spacing: 0.06rem;
 
     &:hover {
       border: 1px solid $primary-color;
@@ -22,6 +26,20 @@
 
     &:focus {
       border: 1px solid $secondary-color;
+    }
+  }
+
+  &.invalid {
+    & {
+      color: $error-color;
+    }
+
+    & > input {
+      border: 1px solid $error-color;
+    }
+
+    & > p {
+      margin: 0;
     }
   }
 }
