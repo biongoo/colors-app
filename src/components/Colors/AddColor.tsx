@@ -3,6 +3,7 @@ import React, { useReducer } from 'react';
 import Box from '../UI/Box';
 import Input from '../UI/Input';
 import Button from '../UI/Button';
+import Color from '../../types/Color';
 import classes from './AddColor.module.scss';
 
 enum ColorActionType {
@@ -51,9 +52,9 @@ const AddColor = () => {
     if (color.error) return;
 
     const colorsParsed = localStorage.getItem('colors');
-    const colors: string[] = colorsParsed ? JSON.parse(colorsParsed) : [];
+    const colors: Color[] = colorsParsed ? JSON.parse(colorsParsed) : [];
 
-    colors.push(color.value);
+    colors.push({ type: 'added', value: color.value });
     localStorage.setItem('colors', JSON.stringify(colors));
   };
 
