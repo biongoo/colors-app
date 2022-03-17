@@ -54,8 +54,9 @@ const AddColor = () => {
     const colorsParsed = localStorage.getItem('colors');
     const colors: Color[] = colorsParsed ? JSON.parse(colorsParsed) : [];
 
-    colors.push({ type: 'added', value: color.value });
+    colors.push({ id: Math.random(), type: 'added', value: color.value });
     localStorage.setItem('colors', JSON.stringify(colors));
+    window.dispatchEvent(new Event('storage'));
   };
 
   const changeColorHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,9 +76,10 @@ const AddColor = () => {
     }
   };
 
-  const error = color.error
-    ? 'Invalid value! Should be like "#1212ab" or "#FFF"'
-    : '';
+  const error =
+    color.error && color.touched
+      ? 'Invalid value! Should be like "#1212ab" or "#FFF"'
+      : '';
 
   return (
     <Box>
