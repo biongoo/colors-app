@@ -67,7 +67,10 @@ const ColorsList: React.FC<Props> = ({ predefinedColors }) => {
         {concatedColors.map((item) => {
           return (
             <li key={item.id}>
-              <p>{item.value}</p>
+              {/* custom `data-*` attributes (attr() function) doesn't work on the newest version of css (only for content) */}
+              <p style={{ '--color': item.value } as React.CSSProperties}>
+                {item.value}
+              </p>
               {item.type === 'added' && (
                 <Button
                   type="button"
