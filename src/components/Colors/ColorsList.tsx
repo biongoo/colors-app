@@ -15,6 +15,12 @@ const defaultCheckboxes = {
 
 type CheckboxesKey = keyof typeof defaultCheckboxes;
 
+type RGB = {
+  red: number;
+  green: number;
+  blue: number;
+};
+
 type Props = {
   predefinedColors: Color[];
 };
@@ -35,6 +41,25 @@ const compareColors = (a: Color, b: Color) => {
   const longB = convertShortHex(b.value);
 
   return longA < longB ? 1 : longA > longB ? -1 : 0;
+};
+
+const calculateSaturationHSL = ({ red, green, blue }: RGB) => {
+  const r = red / 255,
+    g = green / 255,
+    b = blue / 255;
+
+  const cmin = Math.min(r, g, b),
+    cmax = Math.max(r, g, b),
+    delta = cmax - cmin;
+
+  let s = 0,
+    l = 0;
+
+  l = (cmax + cmin) / 2;
+  s = delta === 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
+  s = +(s * 100).toFixed(1);
+
+  return s;
 };
 
 const ColorsList: React.FC<Props> = ({ predefinedColors }) => {
@@ -74,7 +99,22 @@ const ColorsList: React.FC<Props> = ({ predefinedColors }) => {
     .concat(predefinedColors)
     .map((i) => ({ ...i, value: i.value.toUpperCase() }));
 
-  concatedColors.sort(compareColors);
+  const filteredColors = concatedColors.filter((color) => {
+    const longColor = convertShortHex(color.value);
+    const red = parseInt(longColor.slice(1, 3), 16);
+    const green = parseInt(longColor.slice(3, 5), 16);
+    const blue = parseInt(longColor.slice(5, 7), 16);
+
+    return !(
+      (checkboxes.red && red <= 127) ||
+      (checkboxes.green && green <= 127) ||
+      (checkboxes.blue && blue <= 127) ||
+      (checkboxes.saturation &&
+        calculateSaturationHSL({ red, green, blue }) <= 50)
+    );
+  });
+
+  filteredColors.sort(compareColors);
 
   return (
     <Box>
@@ -106,7 +146,7 @@ const ColorsList: React.FC<Props> = ({ predefinedColors }) => {
       </div>
 
       <ul className={classes.list}>
-        {concatedColors.map((item) => {
+        {filteredColors.map((item) => {
           return (
             <li key={item.id}>
               {/* custom `data-*` attributes (attr() function) doesn't work on the newest version of css (only for content) */}

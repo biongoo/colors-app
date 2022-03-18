@@ -8,6 +8,7 @@ import classes from './AddColor.module.scss';
 
 enum ColorActionType {
   TOUCH = 'TOUCH',
+  RESET = 'RESET',
   UPDATE = 'UPDATE',
 }
 
@@ -22,7 +23,7 @@ type ColorAction = {
   payload: string;
 };
 
-const initialColorState: ColorState = {
+const initialColorState = {
   value: '',
   error: false,
   touched: false,
@@ -37,13 +38,17 @@ const colorReducer = (state: ColorState, action: ColorAction) => {
       return { ...state, value: payload, error: !payload.match(pattern) };
     case ColorActionType.TOUCH:
       return { ...state, touched: true, error: !state.value.match(pattern) };
+    case ColorActionType.RESET:
+      return { ...initialColorState };
     default:
       return state;
   }
 };
 
 const AddColor = () => {
-  const [color, dispatchColor] = useReducer(colorReducer, initialColorState);
+  const [color, dispatchColor] = useReducer(colorReducer, {
+    ...initialColorState,
+  });
 
   const addColorHandler = (event: React.FormEvent) => {
     event.preventDefault();
@@ -56,15 +61,18 @@ const AddColor = () => {
 
     // Not the best option with id, but sufficient for this application
     colors.push({ id: Math.random(), type: 'added', value: color.value });
+
     localStorage.setItem('colors', JSON.stringify(colors));
     window.dispatchEvent(new Event('storage'));
+
+    dispatchColor({ type: ColorActionType.RESET, payload: '' });
   };
 
   const changeColorHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     const pattern = /^#[0-9a-fA-F]{0,6}$/;
 
-    if (value === '') {
+    if (!value) {
       dispatchColor({ type: ColorActionType.UPDATE, payload: '' });
     } else if (value.match(pattern)) {
       dispatchColor({ type: ColorActionType.UPDATE, payload: value });

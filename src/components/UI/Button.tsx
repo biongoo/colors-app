@@ -8,16 +8,20 @@ type Props = {
   onClick?: () => void;
 };
 
-const Button: React.FC<Props> = ({ type, color, onClick, children }) => {
-  return (
-    <button
-      type={type}
-      className={`${classes.button} ${color && classes[color]}`}
-      onClick={onClick}
-    >
-      {children}
-    </button>
-  );
-};
+class Button extends React.Component<Props> {
+  render() {
+    return (
+      <button
+        type={this.props.type}
+        className={`${classes.button} ${
+          this.props.color && classes[this.props.color]
+        }`}
+        onClick={this.props.onClick}
+      >
+        {this.props.children}
+      </button>
+    );
+  }
+}
 
 export default Button;
