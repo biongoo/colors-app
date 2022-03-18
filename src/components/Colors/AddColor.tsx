@@ -31,7 +31,7 @@ const initialColorState = {
 
 const colorReducer = (state: ColorState, action: ColorAction) => {
   const { type, payload } = action;
-  const pattern = /^#(?:[0-9a-fA-F]{3}){1,2}$/;
+  const pattern = /^#(?:[0-9a-f]{3}){1,2}$/i;
 
   switch (type) {
     case ColorActionType.UPDATE:
@@ -70,7 +70,7 @@ const AddColor = () => {
 
   const changeColorHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
-    const pattern = /^#[0-9a-fA-F]{0,6}$/;
+    const pattern = /^#[0-9a-f]{0,6}$/i;
 
     if (!value) {
       dispatchColor({ type: ColorActionType.UPDATE, payload: '' });

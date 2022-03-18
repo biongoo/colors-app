@@ -33,7 +33,7 @@ const Input: React.FC<Props> = ({
         onChange={onChange}
         placeholder={placeholder}
       />
-      {error && <p>{error}</p>}
+      {error && <p className={classes.errorText}>{error}</p>}
     </div>
   );
 };
