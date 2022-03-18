@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import Box from '../UI/Box';
+import Button from '../UI/Button';
 import Color from '../../types/Color';
 import classes from './ColorList.module.scss';
 
@@ -51,13 +52,33 @@ const ColorsList: React.FC<Props> = ({ predefinedColors }) => {
 
   concatedColors.sort(compareColors);
 
-  console.log(concatedColors, Math.random());
+  const removeColor = (id: number) => {
+    const colorsParsed = localStorage.getItem('colors');
+    const colors: Color[] = colorsParsed ? JSON.parse(colorsParsed) : [];
+
+    const newColors = colors.filter((item) => item.id !== id);
+    localStorage.setItem('colors', JSON.stringify(newColors));
+    window.dispatchEvent(new Event('storage'));
+  };
 
   return (
     <Box>
       <ul className={classes.list}>
         {concatedColors.map((item) => {
-          return <li key={item.id}>{item.value}</li>;
+          return (
+            <li key={item.id}>
+              <p>{item.value}</p>
+              {item.type === 'added' && (
+                <Button
+                  type="button"
+                  color="danger"
+                  onClick={removeColor.bind(null, item.id)}
+                >
+                  X
+                </Button>
+              )}
+            </li>
+          );
         })}
       </ul>
     </Box>

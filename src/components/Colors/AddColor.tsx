@@ -48,12 +48,13 @@ const AddColor = () => {
   const addColorHandler = (event: React.FormEvent) => {
     event.preventDefault();
 
-    //Checking and parsing color in reducer
+    // Checking and parsing color in reducer
     if (color.error) return;
 
     const colorsParsed = localStorage.getItem('colors');
     const colors: Color[] = colorsParsed ? JSON.parse(colorsParsed) : [];
 
+    // Not the best option with id, but sufficient for this application
     colors.push({ id: Math.random(), type: 'added', value: color.value });
     localStorage.setItem('colors', JSON.stringify(colors));
     window.dispatchEvent(new Event('storage'));

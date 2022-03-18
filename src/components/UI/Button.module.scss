@@ -1,7 +1,6 @@
 @import '../../variables.scss';
 
 .button {
-  align-self: flex-start;
   padding: 0.6rem 0.8rem;
   background-color: $success-color;
   border: none;
@@ -18,5 +17,17 @@
   &:active {
     background-color: $success-active-color;
     box-shadow: $box-shadow;
+  }
+
+  &.danger {
+    background-color: $danger-color;
+
+    &:hover {
+      background-color: $danger-hover-color;
+    }
+
+    &:active {
+      background-color: $danger-active-color;
+    }
   }
 }

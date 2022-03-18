@@ -5,8 +5,12 @@
   padding: 0;
   list-style: none;
 
-  & li {
+  & > li {
     padding: 0.6rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 3.5em;
 
     &:first-child {
       border: 1px solid $border-color;
@@ -22,6 +26,10 @@
     &:last-child {
       border-bottom-left-radius: $border-radius;
       border-bottom-right-radius: $border-radius;
+    }
+
+    & > p {
+      margin: 0;
     }
   }
 }
