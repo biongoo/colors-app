@@ -3,7 +3,17 @@ import React, { useState, useEffect } from 'react';
 import Box from '../UI/Box';
 import Button from '../UI/Button';
 import Color from '../../types/Color';
+import Checkbox from '../UI/Checkbox';
 import classes from './ColorList.module.scss';
+
+const defaultCheckboxes = {
+  red: false,
+  green: false,
+  blue: false,
+  saturation: false,
+};
+
+type CheckboxesKey = keyof typeof defaultCheckboxes;
 
 type Props = {
   predefinedColors: Color[];
@@ -29,6 +39,7 @@ const compareColors = (a: Color, b: Color) => {
 
 const ColorsList: React.FC<Props> = ({ predefinedColors }) => {
   const [colors, setColors] = useState<Color[]>([]);
+  const [checkboxes, setCheckboxes] = useState(defaultCheckboxes);
 
   useEffect(() => {
     const updateColors = () => {
@@ -46,12 +57,6 @@ const ColorsList: React.FC<Props> = ({ predefinedColors }) => {
     };
   }, []);
 
-  const concatedColors = colors
-    .concat(predefinedColors)
-    .map((i) => ({ ...i, value: i.value.toUpperCase() }));
-
-  concatedColors.sort(compareColors);
-
   const removeColor = (id: number) => {
     const colorsParsed = localStorage.getItem('colors');
     const colors: Color[] = colorsParsed ? JSON.parse(colorsParsed) : [];
@@ -61,8 +66,45 @@ const ColorsList: React.FC<Props> = ({ predefinedColors }) => {
     window.dispatchEvent(new Event('storage'));
   };
 
+  const updateCheckbox = (type: CheckboxesKey) => {
+    setCheckboxes((prev) => ({ ...prev, [type]: !prev[type] }));
+  };
+
+  const concatedColors = colors
+    .concat(predefinedColors)
+    .map((i) => ({ ...i, value: i.value.toUpperCase() }));
+
+  concatedColors.sort(compareColors);
+
   return (
     <Box>
+      <div className={classes.formBox}>
+        <Checkbox
+          id="red"
+          label="Red > 50%"
+          checked={checkboxes.red}
+          onChange={updateCheckbox.bind(null, 'red')}
+        />
+        <Checkbox
+          id="green"
+          label="Green > 50%"
+          checked={checkboxes.green}
+          onChange={updateCheckbox.bind(null, 'green')}
+        />
+        <Checkbox
+          id="blue"
+          label="Blue > 50%"
+          checked={checkboxes.blue}
+          onChange={updateCheckbox.bind(null, 'blue')}
+        />
+        <Checkbox
+          id="saturation"
+          label="Saturation > 50%"
+          checked={checkboxes.saturation}
+          onChange={updateCheckbox.bind(null, 'saturation')}
+        />
+      </div>
+
       <ul className={classes.list}>
         {concatedColors.map((item) => {
           return (
